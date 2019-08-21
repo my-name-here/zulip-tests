@@ -4522,3 +4522,20 @@ class TestBulkGetHuddleUserIds(ZulipTestCase):
 
     def test_bulk_get_huddle_user_ids_empty_list(self) -> None:
         self.assertEqual(bulk_get_huddle_user_ids([]), {})
+from actions import check_send_message
+ class OctopusTest(ZulipTestCase):
+     def test_change_welcome_message(self) -> None:
+         sender = get_user('iago@zulip.com', get_realm('zulip'))
+         client = make_client(name="test suite")
+         message_id = check_send_message(sender, client, "stream", ["Verona"], "Zulip Octopus test", "welcome")
+         self.assertEqual(
+             Message.objects.values_list("content", flat=True).get(id=message_id),
+             "Welcome to Zulip :octopus:")
+
+      def test_leave_welcome_message_alone(self) -> None:
+         sender = get_user('iago@zulip.com', get_realm('zulip'))
+         client = make_client(name="test suite")
+         message_id = check_send_message(sender, client, "stream", ["Verona"], "Zulip Octopus test", "Welcome everyone!")
+         self.assertEqual(
+             Message.objects.values_list("content", flat=True).get(id=message_id),
+             "Welcome everyone!")
