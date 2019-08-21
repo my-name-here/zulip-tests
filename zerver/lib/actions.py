@@ -2028,12 +2028,16 @@ def check_send_message(sender: UserProfile, client: Client, message_type_name: s
         message_type_name,
         message_to,
         topic_name)
-
+    if message_content == 'welcome':
+       message_content = 'Welcome to Zulip :octopus:'
+     if message_content == 'latest xkcd':
+       message_content = 'https://xkcd.com'
     message = check_message(sender, client, addressee,
                             message_content, realm, forged, forged_timestamp,
                             forwarder_user_profile, local_id, sender_queue_id,
                             widget_content)
     return do_send_messages([message])[0]
+
 
 def check_schedule_message(sender: UserProfile, client: Client,
                            message_type_name: str,
